@@ -18,7 +18,7 @@ N = 2; //number of channels
 input_gain = ba.db2linear(hslider("input", 0, -6, 12, 0.1));
 output_gain = ba.db2linear(hslider("output", 0, -12, 0, 0.1));
 
-bypass = checkbox("bypass"); // opposite of in button
+effect_in = checkbox("effect in"); // allow or bypass effect chain
 clipping =  checkbox("clip");
 
 effect = hslider("effect", 0, 0, 100, 0.1) / 100; //normalized between 0 and 1
@@ -38,6 +38,6 @@ waveshaper(x) = shaper_1(x) * max(curve, 0) + shaper_2(x) * max(-curve,0) + x*(1
 effect_chain(x) = effect * waveshaper(clipper(x)) + (1-effect)*x;
 
 
-inflator = _ * input_gain  <: effect_chain*(1-bypass), _*bypass :> _ * output_gain;
+inflator = _ * input_gain  <: effect_chain*effect_in, _*(1-effect_in) :> _ * output_gain;
 process = par(i,N, inflator);
 
