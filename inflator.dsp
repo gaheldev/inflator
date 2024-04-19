@@ -15,6 +15,7 @@ import("stdfaust.lib");
 N = 2; //number of channels
 
 
+// TODO: wave 1 and 2 don't yield same volume when maxing everything and clipping
 input_gain = ba.db2linear(hslider("input", 0, -6, 12, 0.1));
 output_gain = ba.db2linear(hslider("output", 0, -12, 0, 0.1));
 
