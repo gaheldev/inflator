@@ -30,10 +30,16 @@ clipper(x) = ba.if(clipping, max(min(x,1), -1), x); // only clips when bool is 1
 
 
 
-shaper_1(x) = 2*x - x^2;
-shaper_2(x) = 1.5*x - 0.0625*x^2 - 0.325*x^3 - 0.0625*x^4;
+warp(x) = fmod(x+1,4) <: _ * (_<=2), (4-_) * (_>2) :> _ - 1; // make x cycle back and forth [-1,1]
 
-// TODO: check curve when >1 or <-1 => use sine? 
+sign(x) = 1, -1 : select2(x<=0);
+
+wave_1(x) = 2*x - sign(x) * x^2; // defined between -1 and 1
+wave_2(x) = 1.5*x - sign(x)*0.0625*x^2 - 0.375*x^3 - sign(x)*0.0625*x^4; // defined between -1 and 1
+
+shaper_1(x) = wave_1(warp(x));
+shaper_2(x) = wave_2(warp(x));
+
 waveshaper(x) = shaper_1(x) * max(curve, 0) + shaper_2(x) * max(-curve,0) + x*(1-abs(curve)); // 0 is linear, 1 is full shaper_1, -1 is full shaper_2
 effect_chain(x) = effect * waveshaper(clipper(x)) + (1-effect)*x;
 apply_effect(x) =  ba.if(effect_in, effect_chain(x), x);
