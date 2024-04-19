@@ -36,8 +36,8 @@ shaper_2(x) = 1.5*x - 0.0625*x^2 - 0.325*x^3 - 0.0625*x^4;
 // TODO: check curve when >1 or <-1 => use sine? 
 waveshaper(x) = shaper_1(x) * max(curve, 0) + shaper_2(x) * max(-curve,0) + x*(1-abs(curve)); // 0 is linear, 1 is full shaper_1, -1 is full shaper_2
 effect_chain(x) = effect * waveshaper(clipper(x)) + (1-effect)*x;
+apply_effect(x) =  ba.if(effect_in, effect_chain(x), x);
 
-
-inflator = _ * input_gain  <: effect_chain*effect_in, _*(1-effect_in) :> _ * output_gain;
+inflator = _ * input_gain : apply_effect : _ * output_gain;
 process = par(i,N, inflator);
 
