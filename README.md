@@ -1,6 +1,6 @@
 # Inflator
 
-This is an Oxford Inflator clone written in faust.
+Oxford Inflator clone written in faust.
 
 ![image](https://github.com/gaheldev/inflator/assets/78329601/c0cb84a7-d263-4397-b8c3-a495ac7a8658)
 
