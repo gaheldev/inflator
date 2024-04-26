@@ -1,15 +1,5 @@
 import("stdfaust.lib");
 
-// [x] input gain
-// [x] output gain
-// [x] effect
-// [x] curve
-//     - [x] +50
-//     - [x] -50
-//     - [x] crossfade
-// [x] clip
-// [x] in
-// [ ] band split (3 bands)
 
 
 N = 2;  //number of channels
