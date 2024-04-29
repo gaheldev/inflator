@@ -1,0 +1,16 @@
+{
+    "$schema": "https://raw.githubusercontent.com/AuburnSounds/dplug/master/plugin-schema.json",
+
+    "vendorName": "Faust",
+    "vendorUniqueID": "FaUs",
+    "vendorSupportEmail": "support@wittyaudio.com",
+    "pluginName": "inflator",
+    "pluginHomepage": "https://faust.grame.fr/",
+    "pluginUniqueID": "PlUg",
+    "publicVersion": "1.0.0",
+    "CFBundleIdentifierPrefix": "com.FaUs",
+    "hasGUI": false,
+    "isSynth": false,
+    "receivesMIDI": false,
+    "category": "effectOther"
+}

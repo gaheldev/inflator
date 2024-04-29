@@ -1,0 +1,64 @@
+{
+    "$schema": "https://raw.githubusercontent.com/Pure-D/code-d/master/json-validation/dub.schema.json",
+
+    "name": "inflator",
+
+    "license": "public domain",
+    "importPaths": [ "." ],
+    "sourcePaths": [ "." ],
+    "stringImportPaths": ["gfx", "fonts", "."],
+
+    "copyright": "none",
+
+    "dflags-linux-dmd": ["-defaultlib=libphobos2.a"],
+    "dflags-osx-ldc": ["-static"],
+    "dflags-linux-ldc": ["-link-defaultlib-shared=false"],
+    "dflags-linux-x86_64-ldc": ["-fvisibility=hidden"],
+    "dflags-windows-ldc": ["-mscrtlib=libcmt"],
+
+    "comment-WARNING-READ-THIS-IS-IMPORTANT": [
+        "    When making your own plug-in you have to CHANGE THESE DEPENDENCY    ",
+        "    SPECIFICATIONS below from path-based to ~>MAJOR.MINOR               ",
+        "      Example: ~>7.0                                                    ",
+        "    See also the DUB documentation:                                     ",
+        "         https://code.dlang.org/package-format?lang=json#version-specs  "],
+    "dependencies":
+    {
+        "dplug:dsp": ">=10.0.0",
+        "dplug:vst3": ">=10.0.0",
+        "dplug:vst": ">=10.0.0",
+        "dplug:au": ">=10.0.0",
+        "dplug:lv2": ">=10.0.0",
+        "dplug:gui": ">=10.0.0",
+        "dplug:pbr-widgets": ">=10.0.0"
+    },
+
+    "versions": ["futureMouseOver", "futurePBRNormals"],
+
+    "configurations": [
+        {
+            "name": "VST3",
+            "versions": ["VST3"],
+            "targetType": "dynamicLibrary",
+            "lflags-osx-ldc": [ "-exported_symbols_list", "module-vst3.lst", "-dead_strip" ]
+        },
+        {
+            "name": "VST",
+            "versions": ["VST"],
+            "targetType": "dynamicLibrary",
+            "lflags-osx-ldc": [ "-exported_symbols_list", "module-vst.lst", "-dead_strip" ]
+        },
+        {
+            "name": "AU",
+            "versions": ["AU"],
+            "targetType": "dynamicLibrary",
+            "lflags-osx-ldc": [ "-exported_symbols_list", "module-au.lst", "-dead_strip" ]
+        },
+        {
+            "name": "LV2",
+            "versions": ["LV2"],
+            "targetType": "dynamicLibrary",
+            "lflags-osx-ldc": [ "-exported_symbols_list", "module-lv2.lst", "-dead_strip" ]
+        }
+    ]
+}
