@@ -3,9 +3,9 @@
 
     "vendorName": "Faust",
     "vendorUniqueID": "FaUs",
-    "vendorSupportEmail": "support@wittyaudio.com",
+    "vendorSupportEmail": "music@gahel.fr",
     "pluginName": "inflator",
-    "pluginHomepage": "https://faust.grame.fr/",
+    "pluginHomepage": "https://github.com/gaheldev/inflator",
     "pluginUniqueID": "PlUg",
     "publicVersion": "1.0.0",
     "CFBundleIdentifierPrefix": "com.FaUs",
