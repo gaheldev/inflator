@@ -6,7 +6,7 @@ Oxford Inflator clone written in faust.
 
 ## Installation
 
-Download the latest release for your system [here](https://github.com/gaheldev/inflator/releases/latest/) and copy it to your `vst` or `lv2` folder.
+Download the latest release for your system [here](https://github.com/gaheldev/inflator/releases/latest/) and copy it to your `vst` folder.
 
 ## Features
 
