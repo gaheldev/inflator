@@ -1,14 +1,14 @@
 {
     "$schema": "https://raw.githubusercontent.com/AuburnSounds/dplug/master/plugin-schema.json",
 
-    "vendorName": "Faust",
-    "vendorUniqueID": "FaUs",
+    "vendorName": "Gahel",
+    "vendorUniqueID": "GaHe",
     "vendorSupportEmail": "music@gahel.fr",
     "pluginName": "inflator",
     "pluginHomepage": "https://github.com/gaheldev/inflator",
-    "pluginUniqueID": "PlUg",
+    "pluginUniqueID": "GaHI",
     "publicVersion": "1.0.0",
-    "CFBundleIdentifierPrefix": "com.FaUs",
+    "CFBundleIdentifierPrefix": "com.GaHe",
     "hasGUI": false,
     "isSynth": false,
     "receivesMIDI": false,

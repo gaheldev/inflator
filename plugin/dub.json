@@ -3,7 +3,7 @@
 
     "name": "inflator",
 
-    "license": "public domain",
+    "license": "GPL-3.0",
     "importPaths": [ "." ],
     "sourcePaths": [ "." ],
     "stringImportPaths": ["gfx", "fonts", "."],
