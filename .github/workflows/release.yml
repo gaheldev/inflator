@@ -1,0 +1,140 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*.*.*'
+
+
+# Common variables for all platforms (ldc is hardcoded in windows job)
+env:
+  # List of commands
+  DPlugBuild: ${{ github.workspace }}/Dplug/tools/dplug-build/dplug-build
+
+
+defaults:
+  run:
+    shell: pwsh
+
+jobs:
+  Release:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os:
+          - windows-latest
+          - ubuntu-20.04 # for glibc compatibility with systems > 20.04
+          - macOS-latest
+        arch:
+          - 'x86_64'
+        compiler:
+          - ldc-latest
+
+    steps:
+    # Checkout
+    - name: Checkout master branch
+      uses: actions/checkout@v4
+
+    # Install
+    - name: Install Dependencies - Ubuntu
+      if: startsWith(matrix.os,'ubuntu')
+      run: |
+        sudo apt-get -yq install libx11-dev
+
+    # - name: Install Dependencies - Mac
+    #   if: startsWith(matrix.os,'macOS')
+    #   run: |
+    #     brew update
+
+    - name: Setup Visual Studio Command Prompt - Windows
+      if: startsWith(matrix.os,'windows')
+      uses: ilammy/msvc-dev-cmd@v1
+      # with:
+        # arch: ${{ matrix.arch }}  # 'x64'by default
+
+    - name: Install compiler
+      uses: dlang-community/setup-dlang@v1
+      with:
+        compiler: ${{ matrix.compiler }}
+
+    - name: Get Dplug
+      uses: GuillaumeFalourd/clone-github-repo-action@v2.3
+      with:
+        depth: 1
+        branch: 'master'
+        owner: 'AuburnSounds'
+        repository: 'Dplug'
+
+    - name: Install dplug-build
+      run: |
+        dub build
+      working-directory: ./Dplug/tools/dplug-build
+
+
+    ## Build plugin
+    - name: Build Inflator plugins
+      run: |
+        if ("${{ matrix.os }}" -like 'windows*') {
+          $Plugins = "-c VST3"
+        } elseif ("${{ matrix.os }}" -like 'macOS*') {
+          $Plugins = "-c VST3"
+        } elseif ("${{ matrix.os }}" -like 'ubuntu*') {
+          $Plugins = "-c VST3 -c LV2"
+        }
+        $esc = '--%'
+        ${{ env.DPlugBuild }} -a ${{ matrix.arch }} $esc $Plugins
+      working-directory: ./plugin
+
+
+    # Create release archives
+    - name: Create release archive for Linux
+      if: startsWith(matrix.os,'ubuntu')
+      run: |
+        mkdir linux-64b
+        $lv2Build = "Linux-64b-LV2/Gahel inflator.lv2"
+        $vst3Build = "Linux-64b-VST3/Gahel inflator.vst3"
+        mv $lv2Build linux-64b/
+        mv $vst3Build linux-64b/
+        zip -r linux-64b.zip linux-64b
+      working-directory: ./plugin/builds
+
+    - name: Create release archive for Windows
+      if: startsWith(matrix.os,'windows')
+      run: |
+        mkdir windows-64b
+        $vst3Build = "Windows-64b-VST3/Gahel inflator-64.vst3"
+        mv $vst3Build windows-64b/
+        Compress-Archive -LiteralPath windows-64b -DestinationPath windows-64b.zip
+      working-directory: ./plugin/builds
+
+    - name: Create release archive for MacOs
+      if: startsWith(matrix.os,'macos')
+      run: |
+        mkdir macos-64b
+        $vst3Build = "macos-64b-VST3/Gahel inflator.vst3"
+        mv $vst3Build macos-64b/
+        zip -r macos-64b.zip macos-64b
+      working-directory: ./plugin/builds
+
+
+    # Create release for each platform
+    # Apparently pattern matching doesn't work here
+    - name: Create release for Linux
+      if: startsWith(matrix.os,'ubuntu')
+      uses: softprops/action-gh-release@v2
+      with:
+        files: plugin/builds/linux-64b.zip
+
+    - name: Create release for Windows
+      if: startsWith(matrix.os,'windows')
+      uses: softprops/action-gh-release@v2
+      with:
+        files: plugin/builds/windows-64b.zip
+
+    - name: Create release for macos
+      if: startsWith(matrix.os,'macOs')
+      uses: softprops/action-gh-release@v2
+      with:
+        files: plugin/builds/macos-64b.zip
+
