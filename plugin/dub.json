@@ -6,7 +6,7 @@
     "license": "GPL-3.0",
     "importPaths": [ "." ],
     "sourcePaths": [ "." ],
-    "stringImportPaths": ["gfx", "fonts", "."],
+    "stringImportPaths": ["."],
 
     "copyright": "none",
 
