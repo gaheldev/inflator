@@ -16,12 +16,6 @@
     "dflags-linux-x86_64-ldc": ["-fvisibility=hidden"],
     "dflags-windows-ldc": ["-mscrtlib=libcmt"],
 
-    "comment-WARNING-READ-THIS-IS-IMPORTANT": [
-        "    When making your own plug-in you have to CHANGE THESE DEPENDENCY    ",
-        "    SPECIFICATIONS below from path-based to ~>MAJOR.MINOR               ",
-        "      Example: ~>7.0                                                    ",
-        "    See also the DUB documentation:                                     ",
-        "         https://code.dlang.org/package-format?lang=json#version-specs  "],
     "dependencies":
     {
         "dplug:dsp": ">=10.0.0",
