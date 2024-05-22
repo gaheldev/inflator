@@ -5,14 +5,14 @@ import("stdfaust.lib");
 N = 2;  //number of channels
 
 
-input_gain = ba.db2linear(hslider("input", 0, -6, 12, 0.1));
-output_gain = ba.db2linear(hslider("output", 0, -12, 0, 0.1));
+input_gain = ba.db2linear(hslider("[0] input", 0, -6, 12, 0.1));
+output_gain = ba.db2linear(hslider("[5] output", 0, -12, 0, 0.1));
 
-effect_in = checkbox("effect in");  // allow or bypass effect chain
-clipping =  checkbox("clip");
+effect_in = checkbox("[4] effect in");  // allow or bypass effect chain
+clipping =  checkbox("[3] clip");
 
-effect = hslider("effect", 0, 0, 100, 0.1) / 100;       //normalized between 0 and 1
-curve = hslider("curve", 0,-50,50,0.1) / 100 + 0.5;     // normalized between 0 and 1
+effect = hslider("[2] effect", 0, 0, 100, 0.1) / 100;       //normalized between 0 and 1
+curve = hslider("[1] curve", 0,-50,50,0.1) / 100 + 0.5;     // normalized between 0 and 1
 
 
 // tools

@@ -6,8 +6,8 @@
 module inflator;
 /* ------------------------------------------------------------
 name: "inflator"
-Code generated with Faust 2.54.9 (https://faust.grame.fr)
-Compilation options: -a dplug.d -lang dlang -cn Inflator -es 1 -mcd 16 -single -ftz 0 -vec -lv 0 -vs 32
+Code generated with Faust 2.74.3 (https://faust.grame.fr)
+Compilation options: -a dplug.d -lang dlang -ct 1 -cn Inflator -es 1 -mcd 16 -mdd 1024 -mdy 33 -single -ftz 0 -vec -lv 0 -vs 32
 ------------------------------------------------------------ */
 /************************************************************************
  IMPORTANT NOTE : this file contains two clearly delimited sections :
@@ -320,10 +320,11 @@ nothrow:
     void updateFaustParams()
     {
         foreach(param; params())
-        {
+        {            
+            int paramIndex = param.index();
             foreach(faustParam; _faustParams)
             {
-                if (param.label() == faustParam.label)
+                if (paramIndex == faustParam.ParamId)
                 {
                     if (cast(FloatParameter)param)
                     {
@@ -365,7 +366,7 @@ nothrow:
             outputs[chan][0..frames] = 0; // D has array slices assignments and operations
     }
 
-private:
+protected:
     FAUSTCLASS _dsp;
     UI _faustUI;
     FaustParam[] _faustParams;
@@ -417,8 +418,9 @@ nothrow:
 	
 	void metadata(Meta* m) nothrow @nogc { 
 		m.declare("basics.lib/name", "Faust Basic Element Library");
-		m.declare("basics.lib/version", "0.9");
-		m.declare("compile_options", "-a dplug.d -lang dlang -cn Inflator -es 1 -mcd 16 -single -ftz 0 -vec -lv 0 -vs 32");
+		m.declare("basics.lib/tabulateNd", "Copyright (C) 2023 Bart Brouns <bart@magnetophon.nl>");
+		m.declare("basics.lib/version", "1.16.0");
+		m.declare("compile_options", "-a dplug.d -lang dlang -ct 1 -cn Inflator -es 1 -mcd 16 -mdd 1024 -mdy 33 -single -ftz 0 -vec -lv 0 -vs 32");
 		m.declare("filename", "inflator.dsp");
 		m.declare("name", "inflator");
 	}
@@ -469,11 +471,17 @@ nothrow:
 	
 	void buildUserInterface(UI* uiInterface) nothrow @nogc {
 		uiInterface.openVerticalBox("inflator");
-		uiInterface.addCheckButton("clip", &fCheckbox1);
-		uiInterface.addHorizontalSlider("curve", &fHslider1, cast(FAUSTFLOAT)0.0, cast(FAUSTFLOAT)-5e+01, cast(FAUSTFLOAT)5e+01, cast(FAUSTFLOAT)0.1);
-		uiInterface.addHorizontalSlider("effect", &fHslider2, cast(FAUSTFLOAT)0.0, cast(FAUSTFLOAT)0.0, cast(FAUSTFLOAT)1e+02, cast(FAUSTFLOAT)0.1);
-		uiInterface.addCheckButton("effect in", &fCheckbox0);
+		uiInterface.declare(&fHslider0, "0", "");
 		uiInterface.addHorizontalSlider("input", &fHslider0, cast(FAUSTFLOAT)0.0, cast(FAUSTFLOAT)-6.0, cast(FAUSTFLOAT)12.0, cast(FAUSTFLOAT)0.1);
+		uiInterface.declare(&fHslider1, "1", "");
+		uiInterface.addHorizontalSlider("curve", &fHslider1, cast(FAUSTFLOAT)0.0, cast(FAUSTFLOAT)-5e+01, cast(FAUSTFLOAT)5e+01, cast(FAUSTFLOAT)0.1);
+		uiInterface.declare(&fHslider2, "2", "");
+		uiInterface.addHorizontalSlider("effect", &fHslider2, cast(FAUSTFLOAT)0.0, cast(FAUSTFLOAT)0.0, cast(FAUSTFLOAT)1e+02, cast(FAUSTFLOAT)0.1);
+		uiInterface.declare(&fCheckbox1, "3", "");
+		uiInterface.addCheckButton("clip", &fCheckbox1);
+		uiInterface.declare(&fCheckbox0, "4", "");
+		uiInterface.addCheckButton("effect in", &fCheckbox0);
+		uiInterface.declare(&fHslider3, "5", "");
 		uiInterface.addHorizontalSlider("output", &fHslider3, cast(FAUSTFLOAT)0.0, cast(FAUSTFLOAT)-12.0, cast(FAUSTFLOAT)0.0, cast(FAUSTFLOAT)0.1);
 		uiInterface.closeBox();
 	}
@@ -572,7 +580,7 @@ nothrow:
 			}
 		}
 		/* Remaining frames */
-		if ((vindex < count)) {
+		if (vindex < count) {
 			FAUSTFLOAT* input0 = &input0_ptr[vindex];
 			FAUSTFLOAT* input1 = &input1_ptr[vindex];
 			FAUSTFLOAT* output0 = &output0_ptr[vindex];

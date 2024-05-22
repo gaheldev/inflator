@@ -15,11 +15,11 @@ mixin(pluginEntryPoints!ExampleClient);
 
 enum : int
 {
-	paramClip,
+	paramInput,
 	paramCurve,
 	paramEffect,
+	paramClip,
 	paramIn,
-	paramInput,
 	paramOutput,
 }
 
