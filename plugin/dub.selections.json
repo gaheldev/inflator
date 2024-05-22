@@ -1,8 +1,0 @@
-{
-	"fileVersion": 1,
-	"versions": {
-		"dplug": "14.3.1",
-		"gamut": "2.6.1",
-		"intel-intrinsics": "1.11.18"
-	}
-}

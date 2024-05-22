@@ -1,0 +1,50 @@
+{
+    "$schema": "https://raw.githubusercontent.com/Pure-D/code-d/master/json-validation/dub.schema.json",
+
+    "name": "inflator",
+
+    "license": "GPL-3.0",
+    "importPaths": [ "." ],
+    "sourcePaths": [ "." ],
+    "stringImportPaths": ["gfx", "."],
+
+    "copyright": "none",
+
+    "dflags-linux-dmd": ["-defaultlib=libphobos2.a"],
+    "dflags-osx-ldc": ["-static"],
+    "dflags-linux-ldc": ["-link-defaultlib-shared=false"],
+    "dflags-linux-x86_64-ldc": ["-fvisibility=hidden"],
+    "dflags-windows-ldc": ["-mscrtlib=libcmt", "-fvisibility=hidden", "-link-defaultlib-shared=false"],
+
+    "dependencies":
+    {
+	"dplug": ">=13.0.0",
+    },
+
+    "versions": ["futureMouseOver", "futurePBRNormals", "futureMouseDrag", "faustoverride"],
+
+    "configurations": [
+        {
+            "name": "VST3",
+            "versions": ["VST3"],
+            "targetType": "dynamicLibrary",
+            "lflags-osx-ldc": [ "-exported_symbols_list", "module-vst3.lst", "-dead_strip" ],
+        },
+        {
+            "name": "AU",
+            "versions": ["AU"],
+            "targetType": "dynamicLibrary",
+            "lflags-osx-ldc": [ "-exported_symbols_list", "module-au.lst", "-dead_strip" ],
+        },
+        {
+            "name": "LV2",
+            "versions": ["LV2"],
+            "targetType": "dynamicLibrary",
+            "lflags-osx-ldc": [ "-exported_symbols_list", "module-lv2.lst", "-dead_strip" ],
+        }
+    ],
+
+    "preBuildCommands": [
+        "faust dsp/inflator.dsp -lang dlang -a dplug.d -cn Inflator -vec -o src/inflator.d"
+    ]
+}
